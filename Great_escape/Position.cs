@@ -105,7 +105,7 @@ public class Position
 
     public override int GetHashCode()
     {
-        return X.GetHashCode() ^ Y.GetHashCode();
+        return X.GetHashCode() * 100000 ^ Y.GetHashCode();
     }
     #endregion
 }

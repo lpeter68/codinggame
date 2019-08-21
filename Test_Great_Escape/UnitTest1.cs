@@ -328,7 +328,7 @@ namespace Test_Great_Escape
             opposants.Add(opposant);
             plateau.Joueurs = Player.GetAllJoueurOrder(moi, opposants);
             var result = plateau.Evaluation();
-            Assert.AreEqual(result, 1);
+            Assert.AreEqual(result, 3);
         }
 
         [TestMethod]
@@ -342,7 +342,8 @@ namespace Test_Great_Escape
             opposants.Add(opposant);
             Coup coup;
             plateau.Joueurs = Player.GetAllJoueurOrder(moi, opposants);
-            var result = Player.MinMax(plateau, 0, 2, int.MinValue, int.MaxValue, out coup);
+            var trace = "";
+            var result = Player.MinMax(plateau, 0, 2, int.MinValue, int.MaxValue, out coup, ref trace);
             Assert.IsNotNull(coup);
         }
 
@@ -359,8 +360,25 @@ namespace Test_Great_Escape
             opposants.Add(opposant);
             Coup coup;
             plateau.Joueurs = Player.GetAllJoueurOrder(moi, opposants);
-            var result = Player.MinMax(plateau, 0, 2, int.MinValue, int.MaxValue, out coup);
+            var trace = "";
+            var result = Player.MinMax(plateau, 0, 2, int.MinValue, int.MaxValue, out coup, ref trace);
             Assert.AreNotEqual(coup.ToString(), "7 4 H");
+        }
+
+        [TestMethod]
+
+        public void HashCodePos()
+        {
+            List<int> hashs = new List<int>();
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    var a = new Position(i, j);
+                    Assert.IsFalse(hashs.Contains(a.GetHashCode()));
+                    hashs.Add(a.GetHashCode());
+                }
+            }
         }
     }
 }
