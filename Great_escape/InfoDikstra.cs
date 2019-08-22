@@ -9,12 +9,14 @@ public class InfoDikstra
     public Position From { get; set; }
     public Direction Objectif { get; set; }
     public List<Case> Result { get; set; }
+    public Plateau Plateau { get; set; }
 
-    public InfoDikstra(Position from, Direction objectif, List<Case> result)
+    public InfoDikstra(Position from, Direction objectif, List<Case> result, Plateau plateau)
     {
         From = from;
         Objectif = objectif;
         Result = result;
+        plateau = Plateau;
     }
 }
 

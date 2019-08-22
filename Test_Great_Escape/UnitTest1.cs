@@ -380,5 +380,42 @@ namespace Test_Great_Escape
                 }
             }
         }
+
+        [TestMethod]
+
+        public void HashCodeMur()
+        {
+            List<int> hashs = new List<int>();
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    for (int k = 0; k < 2; k++)
+                    {
+                        var a = new Mur(new Position(i, j), k == 0);
+                        Assert.IsFalse(hashs.Contains(a.GetHashCode()));
+                        hashs.Add(a.GetHashCode());
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public void TestMinMaxBug()
+        {
+            Plateau plateau = new Plateau(9, 9);
+            Player.InitAvailableMur(plateau);
+            plateau.AddMur(new Mur(new Position(8, 0), true));
+            Joueur moi = new Joueur(new Position(1, 0), 0, 10);
+            Joueur opposant = new Joueur(new Position(8, 7), 1, 9);
+            List<Joueur> opposants = new List<Joueur>();
+            opposants.Add(opposant);
+            Coup coup;
+            plateau.Joueurs = Player.GetAllJoueurOrder(moi, opposants);
+            var trace = "";
+            var result = Player.MinMax(plateau, 0, 2, int.MinValue, int.MaxValue, out coup, ref trace);
+            Assert.AreNotEqual(coup.ToString(), "7 4 H");
+        }
+
     }
 }

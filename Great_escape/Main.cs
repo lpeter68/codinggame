@@ -59,6 +59,11 @@ public class Player
                 plateau.AddMur(mur);
             }
 
+            foreach (var item in plateau.Murs)
+            {
+                Console.Error.WriteLine(item.ToString());
+            }
+
             // Write an action using Console.WriteLine()
             // To debug: Console.Error.WriteLine("Debug messages...");
             Coup coup;
@@ -66,6 +71,7 @@ public class Player
             var trace = "";
             var r = MinMax(plateau, 0, 2, int.MinValue, int.MaxValue, out coup, ref trace);
             Console.Error.WriteLine("End MinMax");
+            //Console.Error.WriteLine(trace);
             Console.Error.WriteLine(r);
             Console.Error.WriteLine(coup.ToString());
             coup.JouerLeCoup();
@@ -193,7 +199,11 @@ public class Player
     /// <returns></returns>
     public static int MinMax(Plateau plateau, int profondeur, int profondeurMax, int alpha, int beta, out Coup meilleurCoup, ref string trace)
     {
-        trace += ":" + profondeur;
+        trace += "\r\n";
+        for (int i = 0; i < profondeur; i++)
+        {
+            trace += "   ";
+        }
         if (profondeur < profondeurMax)
         {
             int currentJoueurIndex = profondeur % plateau.Joueurs.Count(); //id du joueurs de la liste dont c'est le tour (0 c'est moi)
@@ -314,14 +324,14 @@ public class Player
                 }
             }
             meilleurCoup = bestCoup;
-            trace += "=>" + bestEval + "\r\n";
+            trace += "=>" + bestEval;
             return bestEval;
         }
         else
         {
             meilleurCoup = null;
             var eval = plateau.Evaluation();
-            trace += "=>" + eval + "\r\n";
+            trace += "=>" + eval;
             return eval;
         }
     }

@@ -97,6 +97,7 @@ public class Plateau
 
     public bool MurIsValid(Mur murAdd)
     {
+        if (murAdd.ToString() == "4 1 H") Console.Error.WriteLine("validation");
         // vérification qu'il est bien sur le plateu
         var x = murAdd.Pos.X;
         var y = murAdd.Pos.Y;
@@ -119,13 +120,23 @@ public class Plateau
             }
         }
 
+        if (murAdd.ToString() == "4 1 H") Console.Error.WriteLine("placement ok");
+
         foreach (var joueur in Joueurs)
         {
+            if (murAdd.ToString() == "4 1 H") Console.Error.WriteLine("test joueur " + joueur.PlayerId);
             if (AddMur(murAdd, true))
             {
                 try
                 {
-                    Dikstra(joueur.Pos, joueur.Objectif).Count();
+                    var result = Dikstra(joueur.Pos, joueur.Objectif);
+                    if (murAdd.ToString() == "4 1 H")
+                    {
+                        foreach (var item in result)
+                        {
+                            Console.Error.WriteLine(item.ToString());
+                        }
+                    }
                 }
                 catch (NoPathException)
                 {
@@ -163,7 +174,13 @@ public class Plateau
         var hashCode = GetDikstraHashCode(from, objectif);
         if (transposition.ContainsKey(hashCode))
         {
-            return transposition[hashCode].Result;
+            var a = transposition[hashCode];
+            if (a.From != from || a.Objectif != objectif)
+            {
+                Console.Error.WriteLine("hashCode colission Exception");
+                throw new Exception("hashCode colission Exception");
+            }
+            return a.Result;
         }
         else
         {
@@ -174,11 +191,11 @@ public class Plateau
                 if (transposition.ContainsKey(previousHashCode))
                 {
                     //TODO vérifier le chemin différentiel
-                    Console.Error.WriteLine("diffenrtiel is enough");
+                    //Console.Error.WriteLine("diffenrtiel is enough");
                 }
             }
             var result = DikstraCalculation(from, objectif);
-            transposition.Add(hashCode, new InfoDikstra(from, objectif, result));
+            transposition.Add(hashCode, new InfoDikstra(from, objectif, result, this));
             return result;
         }
     }
@@ -299,6 +316,6 @@ public class Plateau
 
     public int GetDikstraHashCode(Position from, Direction objectif)
     {
-        return this.GetHashCode() ^ from.GetHashCode() ^ objectif.GetHashCode();
+        return this.GetHashCode() ^ from.GetHashCode() * 1000 ^ objectif.GetHashCode() * 1000000000;
     }
 }
