@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Test_Great_Escape
 {
     [TestClass]
-    public class UnitTest1
+    public class UnitTestFonction
     {
         [TestMethod]
         public void TestAddVoisine()
@@ -159,121 +159,7 @@ namespace Test_Great_Escape
             Assert.IsFalse(case4.Voisines.Contains(case1));
         }
 
-        [TestMethod]
-        public void TestDikstraSimple()
-        {
-            Plateau plateau = new Plateau(9, 9);
-            var result = plateau.Dikstra(new Position(0, 0), Direction.DROITE);
-            List<Case> expectedResult = new List<Case>();
-            expectedResult.Add(plateau.GetCase(1, 0));
-            expectedResult.Add(plateau.GetCase(2, 0));
-            expectedResult.Add(plateau.GetCase(3, 0));
-            expectedResult.Add(plateau.GetCase(4, 0));
-            expectedResult.Add(plateau.GetCase(5, 0));
-            expectedResult.Add(plateau.GetCase(6, 0));
-            expectedResult.Add(plateau.GetCase(7, 0));
-            expectedResult.Add(plateau.GetCase(8, 0));
-            Assert.AreEqual(result.Count, expectedResult.Count);
-            for (int i = 0; i < expectedResult.Count; i++)
-            {
-                Assert.AreEqual(expectedResult[i], result[i]);
-            }
-        }
 
-        [TestMethod]
-        public void TestDikstraComplexe()
-        {
-            Plateau plateau = new Plateau(9, 9);
-            plateau.AddMur(new Mur(new Position(1, 0), true));
-            plateau.AddMur(new Mur(new Position(3, 0), true));
-            plateau.AddMur(new Mur(new Position(4, 1), true));
-            plateau.AddMur(new Mur(new Position(4, 3), true));
-            var result = plateau.Dikstra(new Position(0, 0), Direction.DROITE);
-            List<Case> expectedResult = new List<Case>();
-            expectedResult.Add(plateau.GetCase(0, 1));
-            expectedResult.Add(plateau.GetCase(0, 2));
-            expectedResult.Add(plateau.GetCase(1, 2));
-            expectedResult.Add(plateau.GetCase(2, 2));
-            expectedResult.Add(plateau.GetCase(3, 2));
-            expectedResult.Add(plateau.GetCase(3, 1));
-            expectedResult.Add(plateau.GetCase(3, 0));
-            expectedResult.Add(plateau.GetCase(4, 0));
-            expectedResult.Add(plateau.GetCase(5, 0));
-            expectedResult.Add(plateau.GetCase(6, 0));
-            expectedResult.Add(plateau.GetCase(7, 0));
-            expectedResult.Add(plateau.GetCase(8, 0));
-            Assert.AreEqual(result.Count, expectedResult.Count);
-            for (int i = 0; i < expectedResult.Count; i++)
-            {
-                Assert.AreEqual(expectedResult[i], result[i]);
-            }
-        }
-
-        [TestMethod]
-        public void TestDikstraSimpleFromBottom()
-        {
-            Plateau plateau = new Plateau(9, 9);
-            var result = plateau.Dikstra(new Position(0, 8), Direction.DROITE);
-            List<Case> expectedResult = new List<Case>();
-            expectedResult.Add(plateau.GetCase(1, 8));
-            expectedResult.Add(plateau.GetCase(2, 8));
-            expectedResult.Add(plateau.GetCase(3, 8));
-            expectedResult.Add(plateau.GetCase(4, 8));
-            expectedResult.Add(plateau.GetCase(5, 8));
-            expectedResult.Add(plateau.GetCase(6, 8));
-            expectedResult.Add(plateau.GetCase(7, 8));
-            expectedResult.Add(plateau.GetCase(8, 8));
-            Assert.AreEqual(result.Count, expectedResult.Count);
-            for (int i = 0; i < expectedResult.Count; i++)
-            {
-                Assert.AreEqual(expectedResult[i], result[i]);
-            }
-        }
-
-        [TestMethod]
-        public void TestDikstraException()
-        {
-            Plateau plateau = new Plateau(9, 9);
-            plateau.AddMur(new Mur(new Position(1, 0), true));
-            plateau.AddMur(new Mur(new Position(1, 2), true));
-            plateau.AddMur(new Mur(new Position(1, 4), true));
-            plateau.AddMur(new Mur(new Position(1, 6), true));
-            plateau.AddMur(new Mur(new Position(0, 8), false));
-            plateau.AddMur(new Mur(new Position(2, 7), true));
-            try
-            {
-                var result = plateau.Dikstra(new Position(0, 8), Direction.DROITE);
-                Assert.Fail(); // raises AssertionException
-            }
-            catch (NoPathException)
-            {
-            }
-        }
-
-        [TestMethod]
-        public void TestDikstraFromTopToBottom()
-        {
-            Plateau plateau = new Plateau(9, 9);
-            plateau.AddMur(new Mur(new Position(0, 1), false));
-
-            var result = plateau.Dikstra(new Position(0, 0), Direction.BAS);
-            List<Case> expectedResult = new List<Case>();
-            expectedResult.Add(plateau.GetCase(1, 0));
-            expectedResult.Add(plateau.GetCase(2, 0));
-            expectedResult.Add(plateau.GetCase(2, 1));
-            expectedResult.Add(plateau.GetCase(2, 2));
-            expectedResult.Add(plateau.GetCase(2, 3));
-            expectedResult.Add(plateau.GetCase(2, 4));
-            expectedResult.Add(plateau.GetCase(2, 5));
-            expectedResult.Add(plateau.GetCase(2, 6));
-            expectedResult.Add(plateau.GetCase(2, 7));
-            expectedResult.Add(plateau.GetCase(2, 8));
-            Assert.AreEqual(result.Count, expectedResult.Count);
-            for (int i = 0; i < expectedResult.Count; i++)
-            {
-                Assert.AreEqual(expectedResult[i], result[i]);
-            }
-        }
 
         [TestMethod]
         public void TestReOrderJoueurOrder()
@@ -303,66 +189,6 @@ namespace Test_Great_Escape
             Assert.IsTrue(result[0] == moi);
             Assert.IsTrue(result[1] == opposant2);
             Assert.IsTrue(result[2] == opposant1);
-        }
-
-        [TestMethod]
-        public void TestFonctionEvaluationSimple()
-        {
-            Plateau plateau = new Plateau(9, 9);
-            Joueur moi = new Joueur(new Position(0, 0), 0, 6);
-            Joueur opposant = new Joueur(new Position(8, 8), 1, 6);
-            List<Joueur> opposants = new List<Joueur>();
-            opposants.Add(opposant);
-            plateau.Joueurs = Player.GetAllJoueurOrder(moi, opposants);
-            var result = plateau.Evaluation();
-            Assert.AreEqual(result, 0);
-        }
-
-        [TestMethod]
-        public void TestFonctionEvaluationComplexe()
-        {
-            Plateau plateau = new Plateau(9, 9);
-            Joueur moi = new Joueur(new Position(1, 0), 0, 6);
-            Joueur opposant = new Joueur(new Position(8, 8), 1, 6);
-            List<Joueur> opposants = new List<Joueur>();
-            opposants.Add(opposant);
-            plateau.Joueurs = Player.GetAllJoueurOrder(moi, opposants);
-            var result = plateau.Evaluation();
-            Assert.AreEqual(result, 3);
-        }
-
-        [TestMethod]
-        public void TestMinMax()
-        {
-            Plateau plateau = new Plateau(9, 9);
-            Player.InitAvailableMur(plateau);
-            Joueur moi = new Joueur(new Position(0, 2), 0, 6);
-            Joueur opposant = new Joueur(new Position(8, 4), 1, 6);
-            List<Joueur> opposants = new List<Joueur>();
-            opposants.Add(opposant);
-            Coup coup;
-            plateau.Joueurs = Player.GetAllJoueurOrder(moi, opposants);
-            var trace = "";
-            var result = Player.MinMax(plateau, 0, 2, int.MinValue, int.MaxValue, out coup, ref trace);
-            Assert.IsNotNull(coup);
-        }
-
-        [TestMethod]
-        public void TestMinMaxException()
-        {
-            Plateau plateau = new Plateau(9, 9);
-            Player.InitAvailableMur(plateau);
-            plateau.AddMur(new Mur(new Position(7, 0), true));
-            plateau.AddMur(new Mur(new Position(7, 2), true));
-            Joueur moi = new Joueur(new Position(2, 1), 0, 6);
-            Joueur opposant = new Joueur(new Position(8, 3), 1, 6);
-            List<Joueur> opposants = new List<Joueur>();
-            opposants.Add(opposant);
-            Coup coup;
-            plateau.Joueurs = Player.GetAllJoueurOrder(moi, opposants);
-            var trace = "";
-            var result = Player.MinMax(plateau, 0, 2, int.MinValue, int.MaxValue, out coup, ref trace);
-            Assert.AreNotEqual(coup.ToString(), "7 4 H");
         }
 
         [TestMethod]
@@ -398,23 +224,6 @@ namespace Test_Great_Escape
                     }
                 }
             }
-        }
-
-        [TestMethod]
-        public void TestMinMaxBug()
-        {
-            Plateau plateau = new Plateau(9, 9);
-            Player.InitAvailableMur(plateau);
-            plateau.AddMur(new Mur(new Position(8, 0), true));
-            Joueur moi = new Joueur(new Position(1, 0), 0, 10);
-            Joueur opposant = new Joueur(new Position(8, 7), 1, 9);
-            List<Joueur> opposants = new List<Joueur>();
-            opposants.Add(opposant);
-            Coup coup;
-            plateau.Joueurs = Player.GetAllJoueurOrder(moi, opposants);
-            var trace = "";
-            var result = Player.MinMax(plateau, 0, 2, int.MinValue, int.MaxValue, out coup, ref trace);
-            Assert.AreNotEqual(coup.ToString(), "7 4 H");
         }
 
         [TestMethod]

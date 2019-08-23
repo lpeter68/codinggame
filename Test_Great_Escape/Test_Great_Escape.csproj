@@ -49,8 +49,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="UnitTestFonction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTestDikstra.cs" />
+    <Compile Include="UnitTestMinMax.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
