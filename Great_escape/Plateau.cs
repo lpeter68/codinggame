@@ -106,7 +106,7 @@ public class Plateau
 
     public bool MurIsValid(Mur murAdd)
     {
-        if (murAdd.ToString() == "4 2 V") Console.Error.WriteLine("validation");
+        if (murAdd.ToString() == "4 0 V") Console.Error.WriteLine("validation");
         // vérification qu'il est bien sur le plateu
         var x = murAdd.Pos.X;
         var y = murAdd.Pos.Y;
@@ -129,17 +129,17 @@ public class Plateau
             }
         }
 
-        if (murAdd.ToString() == "4 2 V") Console.Error.WriteLine("placement ok");
+        if (murAdd.ToString() == "4 0 V") Console.Error.WriteLine("placement ok");
 
         foreach (var joueur in Joueurs)
         {
-            if (murAdd.ToString() == "4 2 V") Console.Error.WriteLine("test joueur " + joueur.PlayerId);
+            if (murAdd.ToString() == "4 0 V") Console.Error.WriteLine("test joueur " + joueur.PlayerId);
             if (AddMur(murAdd, true))
             {
                 try
                 {
                     var result = Dikstra(joueur.Pos, joueur.Objectif);
-                    if (murAdd.ToString() == "4 2 V")
+                    if (murAdd.ToString() == "4 0 V")
                     {
                         foreach (var item in result)
                         {
@@ -149,6 +149,12 @@ public class Plateau
                 }
                 catch (NoPathException)
                 {
+                    if (murAdd.ToString() == "4 0 V") Console.Error.WriteLine("No Path");
+                    return false;
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine(e.Message);
                     return false;
                 }
                 finally
@@ -225,11 +231,25 @@ public class Plateau
             var lastMur = Murs.LastOrDefault();
             if (lastMur != null)
             {
-                var previousHashCode = hashCode ^ Murs.LastOrDefault().GetHashCode();
+                var previousHashCode = hashCode ^ Murs.LastOrDefault().GetHashCode() * 100000000;
                 if (transposition.ContainsKey(previousHashCode))
                 {
-                    //TODO vérifier le chemin différentiel
                     //Console.Error.WriteLine("diffenrtiel is enough");
+                    bool pathOk = true;
+                    var previousResult = transposition[previousHashCode].Result;
+                    if (lastMur.BloqueCases(GetCase(from), previousResult[0], this)) pathOk = false;
+                    for (int i = 1; i < previousResult.Count && pathOk; i++)
+                    {
+                        if (lastMur.BloqueCases(previousResult[i - 1], previousResult[i], this))
+                        {
+                            pathOk = false;
+                        }
+                    }
+                    if (pathOk)
+                    {
+                        Console.Error.WriteLine("differentiel found");
+                        return previousResult;
+                    }
                 }
             }
             var result = DikstraCalculation(from, objectif);

@@ -29,6 +29,32 @@ public class Mur : IPosition
         IsVertical = isVertical;
     }
 
+    public bool BloqueCases(Case case1, Case case2, Plateau plateau)
+    {
+        var caseA = plateau.GetCase(Pos);
+        Case caseB;
+        Case caseC;
+        Case caseD;
+        if (IsVertical)
+        {
+            caseB = plateau.GetCase(Pos.GetPositionBas());
+            caseC = plateau.GetCase(caseA.Pos.GetPositionGauche());
+            caseD = plateau.GetCase(caseB.Pos.GetPositionGauche());
+        }
+        else
+        {
+            caseB = plateau.GetCase(Pos.GetPositionDroite());
+            caseC = plateau.GetCase(caseA.Pos.GetPositionHaut());
+            caseD = plateau.GetCase(caseB.Pos.GetPositionHaut());
+        }
+        if (case1 == caseA && case2 == caseC || case1 == caseB && case2 == caseD ||
+            case2 == caseA && case1 == caseC || case2 == caseB && case1 == caseD)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public override string ToString()
     {
         return Pos.X + " " + Pos.Y + " " + (IsVertical ? "V" : "H");

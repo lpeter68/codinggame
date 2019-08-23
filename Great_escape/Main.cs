@@ -59,7 +59,7 @@ public class Player
                 plateau.AddMur(mur);
             }
 
-            foreach (var item in plateau.Murs)
+            /*foreach (var item in plateau.Murs)
             {
                 Console.Error.WriteLine(item.ToString());
             }
@@ -69,7 +69,7 @@ public class Player
             foreach (var item in dik)
             {
                 Console.Error.WriteLine(item.Pos.ToString());
-            }
+            }*/
 
             // Write an action using Console.WriteLine()
             // To debug: Console.Error.WriteLine("Debug messages...");

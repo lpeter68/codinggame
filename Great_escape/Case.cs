@@ -38,4 +38,9 @@ public class Case : IPosition
             }
         }
     }
+
+    public override string ToString()
+    {
+        return Pos.ToString();
+    }
 }

@@ -440,5 +440,53 @@ namespace Test_Great_Escape
             Assert.AreEqual(plateau1, plateau2);
         }
 
+        [TestMethod]
+        public void TestMurVerticalBloqueCase()
+        {
+            Plateau plateau = new Plateau(2, 2);
+            var case1 = plateau.GetCase(0, 0);
+            var case2 = plateau.GetCase(1, 0);
+            var case3 = plateau.GetCase(0, 1);
+            var case4 = plateau.GetCase(1, 1);
+            var mur = new Mur(new Position(1, 0), true);
+            Assert.IsTrue(mur.BloqueCases(case1, case2, plateau));
+            Assert.IsTrue(mur.BloqueCases(case3, case4, plateau));
+            Assert.IsTrue(mur.BloqueCases(case2, case1, plateau));
+            Assert.IsTrue(mur.BloqueCases(case4, case3, plateau));
+
+            Assert.IsFalse(mur.BloqueCases(case1, case3, plateau));
+            Assert.IsFalse(mur.BloqueCases(case1, case4, plateau));
+            Assert.IsFalse(mur.BloqueCases(case2, case3, plateau));
+            Assert.IsFalse(mur.BloqueCases(case2, case4, plateau));
+            Assert.IsFalse(mur.BloqueCases(case3, case1, plateau));
+            Assert.IsFalse(mur.BloqueCases(case3, case2, plateau));
+            Assert.IsFalse(mur.BloqueCases(case4, case1, plateau));
+            Assert.IsFalse(mur.BloqueCases(case4, case2, plateau));
+        }
+
+        [TestMethod]
+        public void TestMurHorizontalBloqueCase()
+        {
+            Plateau plateau = new Plateau(2, 2);
+            var case1 = plateau.GetCase(0, 0);
+            var case2 = plateau.GetCase(1, 0);
+            var case3 = plateau.GetCase(0, 1);
+            var case4 = plateau.GetCase(1, 1);
+            var mur = new Mur(new Position(0, 1), false);
+            Assert.IsTrue(mur.BloqueCases(case1, case3, plateau));
+            Assert.IsTrue(mur.BloqueCases(case2, case4, plateau));
+            Assert.IsTrue(mur.BloqueCases(case3, case1, plateau));
+            Assert.IsTrue(mur.BloqueCases(case4, case2, plateau));
+
+            Assert.IsFalse(mur.BloqueCases(case1, case2, plateau));
+            Assert.IsFalse(mur.BloqueCases(case1, case4, plateau));
+            Assert.IsFalse(mur.BloqueCases(case2, case3, plateau));
+            Assert.IsFalse(mur.BloqueCases(case2, case1, plateau));
+            Assert.IsFalse(mur.BloqueCases(case3, case4, plateau));
+            Assert.IsFalse(mur.BloqueCases(case3, case2, plateau));
+            Assert.IsFalse(mur.BloqueCases(case4, case1, plateau));
+            Assert.IsFalse(mur.BloqueCases(case4, case3, plateau));
+        }
+
     }
 }
