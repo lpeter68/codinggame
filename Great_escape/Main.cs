@@ -64,6 +64,13 @@ public class Player
                 Console.Error.WriteLine(item.ToString());
             }
 
+            Console.Error.WriteLine("Dikjstra");
+            var dik = plateau.Dikstra(moi.Pos, moi.Objectif);
+            foreach (var item in dik)
+            {
+                Console.Error.WriteLine(item.Pos.ToString());
+            }
+
             // Write an action using Console.WriteLine()
             // To debug: Console.Error.WriteLine("Debug messages...");
             Coup coup;

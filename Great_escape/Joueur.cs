@@ -59,5 +59,39 @@ public class Joueur : IPosition
         }
     }
 
+    public override string ToString()
+    {
+        return Pos.ToString() + " " + PlayerId + " " + MurRestant;
+    }
+
+    #region comparator
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(obj, null) || GetType() != obj.GetType())
+        {
+            return false;
+        }
+
+        var a = (Joueur)obj;
+        return a.Pos == Pos && a.PlayerId == PlayerId && a.MurRestant == MurRestant;
+    }
+
+    public static bool operator ==(Joueur obj1, Joueur obj2)
+    {
+        if (ReferenceEquals(obj1, null)) return ReferenceEquals(obj2, null);
+        return obj1.Equals(obj2);
+    }
+
+    public static bool operator !=(Joueur obj1, Joueur obj2)
+    {
+        return !(obj1 == obj2);
+    }
+
+    public override int GetHashCode()
+    {
+        return Pos.GetHashCode() ^ MurRestant.GetHashCode() * 10000 ^ PlayerId * 100000;
+    }
+    #endregion
 }
 

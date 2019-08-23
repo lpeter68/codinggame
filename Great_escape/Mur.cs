@@ -60,7 +60,7 @@ public class Mur : IPosition
 
     public override int GetHashCode()
     {
-        return Pos.GetHashCode() ^ IsVertical.GetHashCode();
+        return Pos.GetHashCode() ^ IsVertical.GetHashCode() * 1000;
     }
     #endregion
 }

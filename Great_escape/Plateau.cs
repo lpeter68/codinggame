@@ -41,6 +41,15 @@ public class Plateau
         }
     }
 
+    public Plateau(Plateau plateau)
+    {
+        Width = plateau.Width;
+        Height = plateau.Height;
+        Cases = new List<Case>(plateau.Cases);
+        Murs = new List<Mur>(plateau.Murs);
+        Joueurs = new List<Joueur>(plateau.Joueurs);
+    }
+
     public bool AddMur(Mur mur, bool noValidation = false)
     {
         if (!Murs.Contains(mur) && (noValidation || MurIsValid(mur)))
@@ -97,7 +106,7 @@ public class Plateau
 
     public bool MurIsValid(Mur murAdd)
     {
-        if (murAdd.ToString() == "4 1 H") Console.Error.WriteLine("validation");
+        if (murAdd.ToString() == "4 2 V") Console.Error.WriteLine("validation");
         // vérification qu'il est bien sur le plateu
         var x = murAdd.Pos.X;
         var y = murAdd.Pos.Y;
@@ -120,21 +129,21 @@ public class Plateau
             }
         }
 
-        if (murAdd.ToString() == "4 1 H") Console.Error.WriteLine("placement ok");
+        if (murAdd.ToString() == "4 2 V") Console.Error.WriteLine("placement ok");
 
         foreach (var joueur in Joueurs)
         {
-            if (murAdd.ToString() == "4 1 H") Console.Error.WriteLine("test joueur " + joueur.PlayerId);
+            if (murAdd.ToString() == "4 2 V") Console.Error.WriteLine("test joueur " + joueur.PlayerId);
             if (AddMur(murAdd, true))
             {
                 try
                 {
                     var result = Dikstra(joueur.Pos, joueur.Objectif);
-                    if (murAdd.ToString() == "4 1 H")
+                    if (murAdd.ToString() == "4 2 V")
                     {
                         foreach (var item in result)
                         {
-                            Console.Error.WriteLine(item.ToString());
+                            Console.Error.WriteLine(item.Pos.ToString());
                         }
                     }
                 }
@@ -175,11 +184,40 @@ public class Plateau
         if (transposition.ContainsKey(hashCode))
         {
             var a = transposition[hashCode];
-            if (a.From != from || a.Objectif != objectif)
+            if (a.From != from || a.Objectif != objectif || a.Plateau != this)
             {
-                Console.Error.WriteLine("hashCode colission Exception");
-                throw new Exception("hashCode colission Exception");
+                //Console.Error.WriteLine("hashCode colission");
+                var result = DikstraCalculation(from, objectif);
+                a = new InfoDikstra(from, objectif, result, this);
+                transposition[hashCode] = a;
             }
+            /*if (a.Plateau != this)
+            {
+                Console.Error.WriteLine("hashCode colission plateau");
+                if (a.Plateau.Murs.Count == this.Murs.Count)
+                {
+                    for (int i = 0; i < this.Murs.Count; i++)
+                    {
+                        Console.Error.WriteLine("Mur " + i + " " + a.Plateau.Murs[i] + " " + this.Murs[i]);
+                    }
+                }
+                else
+                {
+                    Console.Error.WriteLine("Mur count " + a.Plateau.Murs.Count + " " + this.Murs.Count);
+                }
+                Console.Error.WriteLine("hashCode colission plateau");
+                if (a.Plateau.Joueurs.Count == this.Joueurs.Count)
+                {
+                    for (int i = 0; i < this.Joueurs.Count; i++)
+                    {
+                        Console.Error.WriteLine("Joueurs " + i + " " + a.Plateau.Joueurs[i] + " " + this.Joueurs[i]);
+                    }
+                }
+                else
+                {
+                    Console.Error.WriteLine("Joueurs count " + a.Plateau.Joueurs.Count + " " + this.Joueurs.Count);
+                }
+            }*/
             return a.Result;
         }
         else
@@ -304,18 +342,76 @@ public class Plateau
         return result;
     }
 
+    public int GetDikstraHashCode(Position from, Direction objectif)
+    {
+        return this.GetHashCode() ^ from.GetHashCode() * 10000000 ^ objectif.GetHashCode() * 100000000;
+    }
+
+    #region comparator
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(obj, null) || GetType() != obj.GetType())
+        {
+            return false;
+        }
+
+        var a = (Plateau)obj;
+        if (a.Murs.Count == Murs.Count)
+        {
+            foreach (var item in Murs)
+            {
+                if (!a.Murs.Contains(item))
+                {
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            return false;
+        }
+        if (a.Joueurs.Count == Joueurs.Count)
+        {
+            foreach (var item in Joueurs)
+            {
+                if (!a.Joueurs.Contains(item))
+                {
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public static bool operator ==(Plateau obj1, Plateau obj2)
+    {
+        if (ReferenceEquals(obj1, null)) return ReferenceEquals(obj2, null);
+        return obj1.Equals(obj2);
+    }
+
+    public static bool operator !=(Plateau obj1, Plateau obj2)
+    {
+        return !(obj1 == obj2);
+    }
+
     public override int GetHashCode()
     {
         int result = 0;
         foreach (var mur in Murs)
         {
-            result = result ^ mur.GetHashCode();
+            result = result ^ mur.GetHashCode() * 100000000;
+        }
+        foreach (var joueur in Joueurs)
+        {
+            result = result ^ joueur.GetHashCode() * 1000000;
         }
         return result;
     }
 
-    public int GetDikstraHashCode(Position from, Direction objectif)
-    {
-        return this.GetHashCode() ^ from.GetHashCode() * 1000 ^ objectif.GetHashCode() * 1000000000;
-    }
+    #endregion
 }

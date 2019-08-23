@@ -16,7 +16,7 @@ public class InfoDikstra
         From = from;
         Objectif = objectif;
         Result = result;
-        plateau = Plateau;
+        Plateau = new Plateau(plateau);
     }
 }
 

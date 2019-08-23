@@ -417,5 +417,28 @@ namespace Test_Great_Escape
             Assert.AreNotEqual(coup.ToString(), "7 4 H");
         }
 
+        [TestMethod]
+        public void TestPlateauEquality()
+        {
+            Plateau plateau1 = new Plateau(9, 9);
+            Player.InitAvailableMur(plateau1);
+            plateau1.AddMur(new Mur(new Position(8, 0), true));
+            Joueur moi = new Joueur(new Position(1, 0), 0, 10);
+            Joueur opposant = new Joueur(new Position(8, 7), 1, 9);
+            List<Joueur> opposants = new List<Joueur>();
+            opposants.Add(opposant);
+            plateau1.Joueurs = Player.GetAllJoueurOrder(moi, opposants);
+
+            Plateau plateau2 = new Plateau(9, 9);
+            Player.InitAvailableMur(plateau2);
+            plateau2.AddMur(new Mur(new Position(8, 0), true));
+            Joueur moi2 = new Joueur(new Position(1, 0), 0, 10);
+            Joueur opposant2 = new Joueur(new Position(8, 7), 1, 9);
+            List<Joueur> opposants2 = new List<Joueur>();
+            opposants2.Add(opposant2);
+            plateau2.Joueurs = Player.GetAllJoueurOrder(moi2, opposants2);
+            Assert.AreEqual(plateau1, plateau2);
+        }
+
     }
 }
