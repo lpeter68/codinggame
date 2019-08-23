@@ -44,8 +44,8 @@ namespace Test_Great_Escape
             opposants.Add(opposant);
             Coup coup;
             plateau.Joueurs = Player.GetAllJoueurOrder(moi, opposants);
-            var trace = "";
-            var result = Player.MinMax(plateau, 0, 2, int.MinValue, int.MaxValue, out coup, ref trace);
+            int result;
+            var trace = Player.MinMax(plateau, 0, 2, int.MinValue, int.MaxValue, out coup, out result);
             Assert.IsNotNull(coup);
         }
 
@@ -62,8 +62,8 @@ namespace Test_Great_Escape
             opposants.Add(opposant);
             Coup coup;
             plateau.Joueurs = Player.GetAllJoueurOrder(moi, opposants);
-            var trace = "";
-            var result = Player.MinMax(plateau, 0, 2, int.MinValue, int.MaxValue, out coup, ref trace);
+            int result;
+            var trace = Player.MinMax(plateau, 0, 2, int.MinValue, int.MaxValue, out coup, out result);
             Assert.AreNotEqual(coup.ToString(), "7 4 H");
         }
 
@@ -79,8 +79,8 @@ namespace Test_Great_Escape
             opposants.Add(opposant);
             Coup coup;
             plateau.Joueurs = Player.GetAllJoueurOrder(moi, opposants);
-            var trace = "";
-            var result = Player.MinMax(plateau, 0, 2, int.MinValue, int.MaxValue, out coup, ref trace);
+            int result;
+            var trace = Player.MinMax(plateau, 0, 2, int.MinValue, int.MaxValue, out coup, out result);
             Assert.AreNotEqual(coup.ToString(), "7 4 H");
         }
     }

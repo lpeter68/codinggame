@@ -50,6 +50,7 @@
     <Compile Include="Main.cs" />
     <Compile Include="IPosition.cs" />
     <Compile Include="Joueur.cs" />
+    <Compile Include="MinMaxTrace.cs" />
     <Compile Include="Mur.cs" />
     <Compile Include="NoPathException.cs" />
     <Compile Include="Plateau.cs" />

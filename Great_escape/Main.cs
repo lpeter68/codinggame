@@ -74,11 +74,11 @@ public class Player
             // Write an action using Console.WriteLine()
             // To debug: Console.Error.WriteLine("Debug messages...");
             Coup coup;
+            int r;
             Console.Error.WriteLine("Start MinMax");
-            var trace = "";
-            var r = MinMax(plateau, 0, 2, int.MinValue, int.MaxValue, out coup, ref trace);
+            var trace = MinMax(plateau, 0, 2, int.MinValue, int.MaxValue, out coup, out r);
             Console.Error.WriteLine("End MinMax");
-            //Console.Error.WriteLine(trace);
+            Console.Error.WriteLine(trace);
             Console.Error.WriteLine(r);
             Console.Error.WriteLine(coup.ToString());
             coup.JouerLeCoup();
@@ -204,17 +204,12 @@ public class Player
     /// <param name="profondeur"></param>
     /// <param name="profondeurMax"></param>
     /// <returns></returns>
-    public static int MinMax(Plateau plateau, int profondeur, int profondeurMax, int alpha, int beta, out Coup meilleurCoup, ref string trace)
+    public static MinMaxTrace MinMax(Plateau plateau, int profondeur, int profondeurMax, int alpha, int beta, out Coup meilleurCoup, out int result)
     {
-        trace += "\r\n";
-        for (int i = 0; i < profondeur; i++)
-        {
-            trace += "   ";
-        }
+        int currentJoueurIndex = profondeur % plateau.Joueurs.Count(); //id du joueurs de la liste dont c'est le tour (0 c'est moi)
+        var trace = new MinMaxTrace(profondeur, currentJoueurIndex == 0, profondeur != profondeurMax);
         if (profondeur < profondeurMax)
         {
-            int currentJoueurIndex = profondeur % plateau.Joueurs.Count(); //id du joueurs de la liste dont c'est le tour (0 c'est moi)
-
             List<Coup> coups = new List<Coup>();
             coups.Add(new Coup(Direction.DROITE));
             coups.Add(new Coup(Direction.GAUCHE));
@@ -242,8 +237,8 @@ public class Player
                     {
                         try
                         {
-                            var eval = MinMax(plateau, profondeur + 1, profondeurMax, alpha, beta, out meilleurCoup, ref trace);
-                            trace += " " + eval;
+                            int eval;
+                            trace.Childrens.Add(MinMax(plateau, profondeur + 1, profondeurMax, alpha, beta, out meilleurCoup, out eval));
                             //Console.Error.WriteLine("eval " + eval);
                             if (currentJoueurIndex == 0 && eval > bestEval) //MAX
                             {
@@ -253,7 +248,8 @@ public class Player
                                 if (beta <= bestEval)
                                 {
                                     meilleurCoup = bestCoup;
-                                    return bestEval;
+                                    result = bestEval;
+                                    return trace;
                                 }
                             }
                             else if (currentJoueurIndex != 0 && eval < bestEval) //MIN
@@ -264,7 +260,8 @@ public class Player
                                 if (bestEval <= alpha)
                                 {
                                     meilleurCoup = bestCoup;
-                                    return bestEval;
+                                    result = bestEval;
+                                    return trace;
                                 }
                             }
                         }
@@ -293,8 +290,8 @@ public class Player
                         try
                         {
                             plateau.Joueurs[currentJoueurIndex].Pos = newPos;
-                            var eval = MinMax(plateau, profondeur + 1, profondeurMax, beta, alpha, out meilleurCoup, ref trace);
-                            trace += " " + eval;
+                            int eval;
+                            trace.Childrens.Add(MinMax(plateau, profondeur + 1, profondeurMax, beta, alpha, out meilleurCoup, out eval));
                             //Console.Error.WriteLine("eval " + eval);
                             if (currentJoueurIndex == 0 && eval > bestEval) //MAX
                             {
@@ -304,7 +301,8 @@ public class Player
                                 if (beta <= bestEval) //coupe beta
                                 {
                                     meilleurCoup = bestCoup;
-                                    return bestEval;
+                                    result = bestEval;
+                                    return trace;
                                 }
                             }
                             else if (currentJoueurIndex != 0 && eval < bestEval) //MIN
@@ -315,7 +313,8 @@ public class Player
                                 if (bestEval <= alpha)  //coupe alpha
                                 {
                                     meilleurCoup = bestCoup;
-                                    return bestEval;
+                                    result = bestEval;
+                                    return trace;
                                 }
                             }
                         }
@@ -331,15 +330,19 @@ public class Player
                 }
             }
             meilleurCoup = bestCoup;
-            trace += "=>" + bestEval;
-            return bestEval;
+            trace.Choix = bestCoup;
+            trace.Eval = bestEval;
+            result = bestEval;
+            return trace;
         }
         else
         {
             meilleurCoup = null;
             var eval = plateau.Evaluation();
-            trace += "=>" + eval;
-            return eval;
+            trace.Max = null;
+            trace.Eval = eval;
+            result = eval;
+            return trace;
         }
     }
 }

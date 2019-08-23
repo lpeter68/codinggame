@@ -106,7 +106,7 @@ public class Plateau
 
     public bool MurIsValid(Mur murAdd)
     {
-        if (murAdd.ToString() == "4 0 V") Console.Error.WriteLine("validation");
+        if (murAdd.ToString() == "") Console.Error.WriteLine("validation");
         // vérification qu'il est bien sur le plateu
         var x = murAdd.Pos.X;
         var y = murAdd.Pos.Y;
@@ -129,17 +129,17 @@ public class Plateau
             }
         }
 
-        if (murAdd.ToString() == "4 0 V") Console.Error.WriteLine("placement ok");
+        if (murAdd.ToString() == "") Console.Error.WriteLine("placement ok");
 
         foreach (var joueur in Joueurs)
         {
-            if (murAdd.ToString() == "4 0 V") Console.Error.WriteLine("test joueur " + joueur.PlayerId);
+            if (murAdd.ToString() == "") Console.Error.WriteLine("test joueur " + joueur.PlayerId);
             if (AddMur(murAdd, true))
             {
                 try
                 {
                     var result = Dikstra(joueur.Pos, joueur.Objectif);
-                    if (murAdd.ToString() == "4 0 V")
+                    if (murAdd.ToString() == "")
                     {
                         foreach (var item in result)
                         {
@@ -149,7 +149,7 @@ public class Plateau
                 }
                 catch (NoPathException)
                 {
-                    if (murAdd.ToString() == "4 0 V") Console.Error.WriteLine("No Path");
+                    if (murAdd.ToString() == "") Console.Error.WriteLine("No Path");
                     return false;
                 }
                 catch (Exception e)
@@ -247,7 +247,7 @@ public class Plateau
                     }
                     if (pathOk)
                     {
-                        Console.Error.WriteLine("differentiel found");
+                        //Console.Error.WriteLine("differentiel found");
                         return previousResult;
                     }
                 }
@@ -357,7 +357,7 @@ public class Plateau
             var adversaire = Joueurs[i];
             var distanceAdversaire = Dikstra(adversaire.Pos, adversaire.Objectif).Count();
             result += (distanceAdversaire - maDistance) * 3;
-            result += mesMurs - adversaire.MurRestant;
+            //result += mesMurs - adversaire.MurRestant;
         }
         return result;
     }
