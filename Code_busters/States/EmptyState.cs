@@ -17,25 +17,43 @@ namespace Code_busters.States
 
         public override void DoNextAction(GameContext gameContext)
         {
-            if (gameContext.Ghosts.Any())
+            IAction action = null;
+            if (Buster.StunAvailableIn <= 0)
             {
-                Ghost target = gameContext.Ghosts.First();
-                var dist = Buster.Position.GetDist(target.Position);
-                if (dist < 1760 && dist > 900)
+                var a = gameContext.OppositeBusters.FirstOrDefault(b => b.Position.GetDist(Buster.Position) < 1760);
+                if (a != null)
                 {
-                    new Bust(target.Id).Do();
+                    action = new Stun(a);
+                    Buster.StunAvailableIn = 20;
+                }
+            }
+            if (action == null)
+            {
+                if (gameContext.Ghosts.Any())
+                {
+                    Ghost target = gameContext.Ghosts.First();
+                    var dist = Buster.Position.GetDist(target.Position);
+                    if (dist < 1760 && dist > 900)
+                    {
+                        action = new Bust(target.Id);
+                    }
+                    else
+                    {
+                        action = new Move(target.Position);
+                    }
                 }
                 else
                 {
-                    new Move(target.Position).Do();
+                    if (Buster.Target == null || Buster.Target.GetDist(Buster.Position) < 500)
+                    {
+                        var x = new Random().Next(0, 16000);
+                        var y = new Random().Next(0, 9000);
+                        Buster.Target = new Point(x, y);
+                    }
+                    action = new Move(Buster.Target);
                 }
             }
-            else
-            {
-                var x = new Random().Next(0, 16000);
-                var y = new Random().Next(0, 9000);
-                new Move(x, y).Do();
-            }
+            action.Do("empty");
         }
     }
 }

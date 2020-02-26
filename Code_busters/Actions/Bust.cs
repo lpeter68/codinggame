@@ -15,9 +15,9 @@ namespace Code_busters.Actions
             TargetId = id;
         }
 
-        public void Do()
+        public void Do(string message = "")
         {
-            Console.WriteLine("BUST " + TargetId);
+            Console.WriteLine("BUST " + TargetId + " " + message);
         }
     }
 }

@@ -49,6 +49,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Code_busters\Code_busters.csproj">
+      <Project>{cd8b760f-a1e4-4b55-ac38-acc9c3f8fa37}</Project>
+      <Name>Code_busters</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Great_escape\Great_escape.csproj">
       <Project>{16366d79-3b7c-4a86-8b1d-c0688c966faf}</Project>
       <Name>Great_escape</Name>

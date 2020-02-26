@@ -11,7 +11,7 @@ namespace Code_busters.Objects
         public Point Position { get; set; }
         public int Id { get; set; }
         public int EntityType { get; set; }
-        public int State { get; set; }
+        public virtual int State { get; set; }
         public int Value { get; set; }
     }
 }

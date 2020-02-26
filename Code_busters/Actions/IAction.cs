@@ -11,6 +11,6 @@ namespace Code_busters
         /// <summary>
         /// Ecrit la commande de sortie correspondante
         /// </summary>
-        void Do();
+        void Do(string message = "");
     }
 }

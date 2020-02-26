@@ -20,9 +20,9 @@ namespace Code_busters.Actions
             Target = target;
         }
 
-        public void Do()
+        public void Do(string message = "")
         {
-            Console.WriteLine("MOVE " + Target);
+            Console.WriteLine("MOVE " + Target + " " + message);
         }
     }
 }

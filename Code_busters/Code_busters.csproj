@@ -47,6 +47,7 @@
     <Compile Include="Actions\Move.cs" />
     <Compile Include="Actions\Release.cs" />
     <Compile Include="Actions\IAction.cs" />
+    <Compile Include="Actions\Stun.cs" />
     <Compile Include="Objects\BaseObject.cs" />
     <Compile Include="Objects\Buster.cs" />
     <Compile Include="Objects\GameContext.cs" />

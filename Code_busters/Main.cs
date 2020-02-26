@@ -37,7 +37,7 @@ class Player
                 }
                 else
                 {
-                    gameContext.Busters.Add(new Buster(entityId, entityType, x, y, state, value));
+                    gameContext.UpdateBuster(entityId, entityType, x, y, state, value);
                 }
             }
 

@@ -10,9 +10,9 @@ namespace Code_busters.Actions
     {
         public Release() { }
 
-        public void Do()
+        public void Do(string message = "")
         {
-            Console.WriteLine("RELEASE");
+            Console.WriteLine("RELEASE " + message);
         }
     }
 }
