@@ -12,7 +12,7 @@ namespace Concat
     {
         static void Main(string[] args)
         {
-            var path = @"C:\Users\tma\source\repos\Coding game\Great_escape";
+            var path = @"C:\Users\tma\source\repos\Coding game\Code_busters";
 
             if (Directory.Exists(path))
             {
@@ -27,12 +27,12 @@ namespace Concat
         public static void ProcessDirectory(string targetDirectory)
         {
             // Process the list of files found in the directory.
-            string[] fileEntries = Directory.GetFiles(targetDirectory, "*.cs", SearchOption.TopDirectoryOnly);
+            string[] fileEntries = Directory.GetFiles(targetDirectory, "*.cs", SearchOption.AllDirectories);
             List<String> use = new List<string>();
             List<String> content = new List<string>();
             foreach (string fileName in fileEntries)
             {
-                if (Path.GetExtension(fileName) == ".cs")
+                if (Path.GetExtension(fileName) == ".cs" && !fileName.Contains("\\bin\\") && !fileName.Contains("\\obj\\") && !fileName.Contains("\\Properties\\"))
                 {
                     var lines = File.ReadAllLines(fileName);
                     foreach (var line in lines)
