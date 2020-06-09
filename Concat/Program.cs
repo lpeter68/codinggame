@@ -12,7 +12,7 @@ namespace Concat
     {
         static void Main(string[] args)
         {
-            var path = @"C:\Users\tma\source\repos\Coding game\Code_busters";
+            var path = @"C:\Users\tma\source\repos\Coding game\Skynet";
 
             if (Directory.Exists(path))
             {

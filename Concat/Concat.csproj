@@ -57,6 +57,10 @@
       <Project>{16366d79-3b7c-4a86-8b1d-c0688c966faf}</Project>
       <Name>Great_escape</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Skynet\Skynet.csproj">
+      <Project>{d3514c08-7f4f-4104-8a71-43c95393c37f}</Project>
+      <Name>Skynet</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
