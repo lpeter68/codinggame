@@ -17,21 +17,35 @@ namespace Code_busters.States
 
         public override void DoNextAction(GameContext gameContext)
         {
+            var comment = "";
             IAction action = null;
             if (Buster.StunAvailableIn <= 0)
             {
                 var a = gameContext.OppositeBusters.FirstOrDefault(b => b.Position.GetDist(Buster.Position) < 1760);
-                if (a != null)
+                if (a != null && a.StunFor < 3)
                 {
                     action = new Stun(a);
                     Buster.StunAvailableIn = 20;
                 }
             }
-            if (action == null)
+            if (action == null && gameContext.Ghosts.Any(g => g.Position.GetDist(Buster.Position) < 2200))
             {
-                if (gameContext.Ghosts.Any())
+                comment = "ghost to catch";
+                Ghost target;
+                if (Buster.GhostTarget != null && gameContext.Ghosts.Select(g => g.Id).Contains(Buster.GhostTarget.Id))
                 {
-                    Ghost target = gameContext.Ghosts.First();
+                    target = Buster.GhostTarget;
+                }
+                else
+                {
+                    target = gameContext.Ghosts
+                        .Where(g => g.Position.GetDist(Buster.Position) < 2200 && gameContext.MyBusters.Where(b => b.GhostTarget?.Id == g.Id).Count() <= g.Value)
+                        .OrderBy(g => Buster.Position.GetDist(g.Position))
+                        .FirstOrDefault();
+                }
+                Buster.GhostTarget = target;
+                if (target != null)
+                {
                     var dist = Buster.Position.GetDist(target.Position);
                     if (dist < 1760 && dist > 900)
                     {
@@ -39,21 +53,23 @@ namespace Code_busters.States
                     }
                     else
                     {
-                        action = new Move(target.Position);
+                        if (dist < 900)
+                        {
+                            action = new Move(target.Position.X + 50, target.Position.Y);
+                        }
+                        else
+                        {
+                            action = new Move(target.Position);
+                        }
                     }
-                }
-                else
-                {
-                    if (Buster.Target == null || Buster.Target.GetDist(Buster.Position) < 500)
-                    {
-                        var x = new Random().Next(0, 16000);
-                        var y = new Random().Next(0, 9000);
-                        Buster.Target = new Point(x, y);
-                    }
-                    action = new Move(Buster.Target);
                 }
             }
-            action.Do("empty");
+            if (action == null)
+            {
+                comment = "no ghost";
+                action = new RandomMove();
+            }
+            action.Do(comment);
         }
     }
 }

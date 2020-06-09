@@ -18,6 +18,7 @@ namespace Code_busters.Actions
 
         public void Do(string message = "")
         {
+            Target.State = 2;
             Console.WriteLine("STUN " + Target.Id + " " + message);
         }
     }

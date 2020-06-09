@@ -8,8 +8,11 @@ namespace Code_busters.Objects
 {
     public class Ghost : BaseObject
     {
+        public bool targeted;
+
         public Ghost(int id, int type, Point position, int state, int value)
         {
+            targeted = false;
             if (type != -1) throw new Exception("invalid type for this object");
             else
             {

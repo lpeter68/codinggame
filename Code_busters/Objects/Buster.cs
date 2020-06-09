@@ -19,14 +19,15 @@ namespace Code_busters.Objects
             set
             {
                 _state = value;
-                if (_state != 1)
+                /*if (_state != 1)
                 {
-                    CurrentState = new EmptyState(this);
+                    //if (Id % 2 == 0 && StunAvailableIn == 0) CurrentState = new GuardState(this);
+                    //else CurrentState = new EmptyState(this);
                 }
                 else
                 {
                     CurrentState = new FullState(this);
-                }
+                }*/
             }
         }
 
@@ -34,6 +35,15 @@ namespace Code_busters.Objects
         public int StunAvailableIn { get => _stunAvailableIn; set { _stunAvailableIn = value <= 0 ? 0 : value; } }
 
         public Point Target { get; set; }
+        public Ghost GhostTarget { get; set; }
+        public int StunFor
+        {
+            get
+            {
+                if (State == 2) return Value;
+                else return 0;
+            }
+        }
 
         public Buster(int id, int type, Point position, int state, int value)
         {
@@ -58,6 +68,20 @@ namespace Code_busters.Objects
         public void NextAction(GameContext gameContext)
         {
             CurrentState.DoNextAction(gameContext);
+        }
+
+        public void DefineState(GameContext gameContext)
+        {
+            if (_state != 1)
+            {
+                if (gameContext.MyBusters.OrderByDescending(b => b.Id).FirstOrDefault() == this) CurrentState = new SupportState(this);
+                else if ((gameContext.GhostCount - gameContext.Score * 2) <= gameContext.BustersPerPlayer && StunAvailableIn <= 1) CurrentState = new GuardState(this);
+                else CurrentState = new EmptyState(this);
+            }
+            else
+            {
+                CurrentState = new FullState(this);
+            }
         }
     }
 }

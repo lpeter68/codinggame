@@ -17,14 +17,29 @@ namespace Code_busters.States
 
         public override void DoNextAction(GameContext gameContext)
         {
-            if (Buster.Position.GetDist(gameContext.GetQG()) < 1600)
+            IAction action = null;
+            if (Buster.StunAvailableIn <= 0)
             {
-                new Release().Do();
+                var a = gameContext.OppositeBusters.FirstOrDefault(b => b.Position.GetDist(Buster.Position) < 1760);
+                if (a != null)
+                {
+                    action = new Stun(a);
+                    Buster.StunAvailableIn = 20;
+                }
             }
-            else
+            if (action == null)
             {
-                new Move(gameContext.GetQG()).Do();
+                if (Buster.Position.GetDist(gameContext.GetQG()) < 1600)
+                {
+                    gameContext.Score++;
+                    action = new Release();
+                }
+                else
+                {
+                    action = new Move(gameContext.GetQG());
+                }
             }
+            action.Do();
         }
     }
 }

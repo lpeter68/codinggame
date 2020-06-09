@@ -45,6 +45,7 @@ class Player
 
             foreach (var buster in myBusters)
             {
+                buster.DefineState(gameContext);
                 buster.NextAction(gameContext);
             }
         }
