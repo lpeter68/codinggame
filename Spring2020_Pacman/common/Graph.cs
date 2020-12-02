@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Skynet.common
+namespace Spring2020_Pacman.common
 {
     public class Graph
     {

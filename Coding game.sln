@@ -15,7 +15,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Code_busters", "Code_buster
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skynet", "Skynet\Skynet.csproj", "{D3514C08-7F4F-4104-8A71-43C95393C37F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test_Skynet", "Test_Skynet\Test_Skynet.csproj", "{93E58E0C-BA57-48F6-BE8B-E620E919DD39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test_Skynet", "Test_Skynet\Test_Skynet.csproj", "{93E58E0C-BA57-48F6-BE8B-E620E919DD39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spring2020_Pacman", "Spring2020_Pacman\Spring2020_Pacman.csproj", "{5B0EA037-6358-49FD-8902-0CBF33FB280F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{93E58E0C-BA57-48F6-BE8B-E620E919DD39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93E58E0C-BA57-48F6-BE8B-E620E919DD39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93E58E0C-BA57-48F6-BE8B-E620E919DD39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B0EA037-6358-49FD-8902-0CBF33FB280F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B0EA037-6358-49FD-8902-0CBF33FB280F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B0EA037-6358-49FD-8902-0CBF33FB280F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B0EA037-6358-49FD-8902-0CBF33FB280F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

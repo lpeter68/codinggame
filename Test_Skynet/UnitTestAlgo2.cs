@@ -79,5 +79,31 @@ namespace Test_Skynet
             Assert.AreEqual("3 4", result);
 
         }
+
+        [TestMethod]
+        public void TestDoubleExit()
+        {
+            Graph graph = new Graph(6);
+            graph.AddBidirectionnalLink(0, 1);
+            graph.AddBidirectionnalLink(1, 2);
+            graph.AddBidirectionnalLink(2, 3);
+            graph.AddBidirectionnalLink(3, 4);
+            graph.AddBidirectionnalLink(3, 5);
+
+
+            List<int> exits = new List<int>();
+            exits.Add(0);
+            exits.Add(4);
+            exits.Add(5);
+
+            Context context = new Context();
+            context.Graph = graph;
+            context.Exits = exits;
+            context.SkynetNode = 2;
+
+            var result = Algo2.Play(context);
+            Assert.AreEqual("3 4", result);
+
+        }
     }
 }
